@@ -1,0 +1,32 @@
+{
+  "name": "gitsage",
+  "version": "1.0.0",
+  "description": "NPM wrapper for the GitSage CLI",
+  "main": "index.js",
+  "bin": {
+    "gitsage": "index.js"
+  },
+  "scripts": {
+    "postinstall": "node postinstall.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iamAgbaCoder/gitsage"
+  },
+  "author": "",
+  "license": "MIT",
+  "keywords": [
+    "gitsage",
+    "cli",
+    "git"
+  ],
+  "os": [
+    "darwin",
+    "linux",
+    "win32"
+  ],
+  "cpu": [
+    "x64",
+    "arm64"
+  ]
+}
