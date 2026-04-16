@@ -55,14 +55,23 @@ if (!fs.existsSync(BIN_DIR)) {
 
 function downloadFile(url, dest, currentAttempt = 1, maxRetries = 3) {
     return new Promise((resolve, reject) => {
-        console.log(`[Attempt ${currentAttempt}/${maxRetries}] Downloading ${url}...`);
-        
+        const timeoutDuration = 60000;
+        let isRequestFinalized = false;
+
+        console.log(`[Attempt ${currentAttempt}/${maxRetries}] Downloading ${url.split('?')[0]}...`);
+
         const file = fs.createWriteStream(dest);
-        
-        const request = https.get(url, (response) => {
-            // Handle Redirects
+        const options = {
+            headers: { 'User-Agent': 'gitsage-installer' }
+        };
+
+        const request = https.get(url, options, (response) => {
             if (response.statusCode === 301 || response.statusCode === 302) {
+                isRequestFinalized = true;
                 file.close();
+                // Clean up the partial file before redirecting
+                if (fs.existsSync(dest)) fs.unlinkSync(dest);
+                
                 downloadFile(response.headers.location, dest, currentAttempt, maxRetries)
                     .then(resolve)
                     .catch(reject);
@@ -70,49 +79,52 @@ function downloadFile(url, dest, currentAttempt = 1, maxRetries = 3) {
             }
 
             if (response.statusCode !== 200) {
-                file.close();
-                fs.unlink(dest, () => {}); // Cleanup
-                const error = new Error(`HTTP ${response.statusCode} - ${response.statusMessage}`);
-                if (currentAttempt < maxRetries) {
-                    console.log(`Download failed, retrying in 2 seconds... (${error.message})`);
-                    setTimeout(() => {
-                        downloadFile(url, dest, currentAttempt + 1, maxRetries)
-                            .then(resolve)
-                            .catch(reject);
-                    }, 2000);
-                } else {
-                    reject(error);
-                }
+                handleFailure(new Error(`HTTP ${response.statusCode} - ${response.statusMessage}`));
                 return;
             }
 
             response.pipe(file);
+        });
 
-            file.on('finish', () => {
-                file.close();
-                resolve();
-            });
-        }).on('error', (err) => {
+        file.on('finish', () => {
+            if (isRequestFinalized) return;
+            isRequestFinalized = true;
             file.close();
-            fs.unlink(dest, () => {}); // Cleanup
+            resolve();
+        });
+
+        const handleFailure = (err) => {
+            if (isRequestFinalized) return;
+            isRequestFinalized = true;
+
+            request.destroy();
+            file.removeAllListeners();
+            file.close();
+            
+            if (fs.existsSync(dest)) {
+                try { fs.unlinkSync(dest); } catch (e) {}
+            }
+
             if (currentAttempt < maxRetries) {
-                console.log(`Download failed, retrying in 2 seconds... (${err.message})`);
+                const delay = 3000 * currentAttempt;
+                console.warn(`Download failed: ${err.message}. Retrying in ${delay / 1000}s...`);
                 setTimeout(() => {
                     downloadFile(url, dest, currentAttempt + 1, maxRetries)
                         .then(resolve)
                         .catch(reject);
-                }, 2000);
+                }, delay);
             } else {
                 reject(err);
             }
+        };
+
+        request.on('error', handleFailure);
+        request.setTimeout(timeoutDuration, () => {
+            handleFailure(new Error(`Socket timeout after ${timeoutDuration / 1000}s`));
         });
 
-        // Set higher timeout for the socket
-        request.setTimeout(30000, () => {
-            request.destroy();
-            file.close();
-            fs.unlink(dest, () => {}); // Cleanup
-            reject(new Error('Downloader socket timed out'));
+        file.on('error', (err) => {
+            handleFailure(err);
         });
     });
 }
