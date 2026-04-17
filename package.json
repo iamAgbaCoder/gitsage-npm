@@ -1,6 +1,6 @@
 {
   "name": "gitsage",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "NPM wrapper for the GitSage CLI - The official installer for GitSage",
   "main": "index.js",
   "bin": {
@@ -12,12 +12,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/iamAgbaCoder/gitsage.git"
+    "url": "https://github.com/iamAgbaCoder/gitsage-npm.git"
   },
   "bugs": {
-    "url": "https://github.com/iamAgbaCoder/gitsage/issues"
+    "url": "https://github.com/iamAgbaCoder/gitsage-npm/issues"
   },
-  "homepage": "https://github.com/iamAgbaCoder/gitsage#readme",
+  "homepage": "https://github.com/iamAgbaCoder/gitsage-npm#readme",
   "author": "iamAgbaCoder <https://github.com/iamAgbaCoder>",
   "license": "MIT",
   "keywords": [

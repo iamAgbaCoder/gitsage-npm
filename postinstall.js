@@ -9,7 +9,11 @@ const readline = require('readline');
 const REPO = 'iamAgbaCoder/gitsage';
 const PKG_JSON = require('./package.json');
 const PKG_VERSION = PKG_JSON.version;
-const VERSION = `v${PKG_VERSION}`;
+
+// The actual version of the binary released on GitHub
+// Decoupled from the NPM wrapper's version (currently v1.1.0)
+const CLI_VERSION = 'v1.0.0'; 
+const VERSION = CLI_VERSION;
 
 // Setup paths
 const BIN_DIR = path.join(__dirname, 'bin');
