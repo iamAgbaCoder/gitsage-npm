@@ -12,7 +12,7 @@ const PKG_VERSION = PKG_JSON.version;
 
 // The actual version of the binary released on GitHub
 // Decoupled from the NPM wrapper's version (currently v1.1.0)
-const CLI_VERSION = 'v1.0.0'; 
+const CLI_VERSION = 'v1.2.0'; 
 const VERSION = CLI_VERSION;
 
 // Setup paths
