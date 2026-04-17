@@ -1,25 +1,45 @@
 {
   "name": "gitsage",
   "version": "1.0.0",
-  "description": "NPM wrapper for the GitSage CLI",
+  "description": "NPM wrapper for the GitSage CLI - The official installer for GitSage",
   "main": "index.js",
   "bin": {
     "gitsage": "index.js"
   },
   "scripts": {
-    "postinstall": "node postinstall.js"
+    "postinstall": "node postinstall.js",
+    "test": "node index.js --help"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/iamAgbaCoder/gitsage"
+    "url": "https://github.com/iamAgbaCoder/gitsage.git"
   },
-  "author": "",
+  "bugs": {
+    "url": "https://github.com/iamAgbaCoder/gitsage/issues"
+  },
+  "homepage": "https://github.com/iamAgbaCoder/gitsage#readme",
+  "author": "iamAgbaCoder <https://github.com/iamAgbaCoder>",
   "license": "MIT",
   "keywords": [
     "gitsage",
+    "git",
     "cli",
-    "git"
+    "ai",
+    "git-ai",
+    "commit",
+    "automation",
+    "productivity",
+    "developer-tools",
+    "dx",
+    "workflow",
+    "commit-messages",
+    "terminal",
+    "git-intelligence",
+    "version-control"
   ],
+  "engines": {
+    "node": ">=14.0.0"
+  },
   "os": [
     "darwin",
     "linux",
@@ -28,5 +48,19 @@
   "cpu": [
     "x64",
     "arm64"
+  ],
+  "files": [
+    "index.js",
+    "postinstall.js",
+    "package.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "funding": [
+    {
+      "type": "individual",
+      "url": "https://github.com/iamAgbaCoder"
+    }
   ]
 }
+
