@@ -1,7 +1,7 @@
 {
   "name": "gitsage-cli",
-  "version": "1.0.0",
-  "description": "NPM wrapper for the GitSage CLI - The official installer for GitSage",
+  "version": "1.0.1",
+  "description": "NPM Installer wrapper for the GitSage CLI - The official installer for GitSage",
   "main": "index.js",
   "bin": {
     "gitsage": "index.js"
